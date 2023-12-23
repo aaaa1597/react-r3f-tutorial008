@@ -1,15 +1,19 @@
 import React, {useRef} from 'react';
 import './App.css';
 import { Canvas, useFrame, MeshProps  } from '@react-three/fiber'
-import { Stats } from "@react-three/drei";
-import * as THREE from "three";
 
-const Box = (props: MeshProps) => {
-  const ref = useRef<THREE.Mesh>(null!)
+type Props = {
+  position?: number[];
+  name?: string;
+}
+
+const Box = (props: Props) => {
+  const ref = useRef<MeshProps>()
 
   useFrame((_, delta) => {
-    ref.current!.rotation.x += 1 * delta
-    ref.current!.rotation.y += 0.5 * delta
+    if( !ref.current) return
+    ref.current.rotation.x += 1 * delta
+    ref.current.rotation.y += 0.5 * delta
   })
 
   return (
@@ -24,7 +28,6 @@ const App = () => {
   return (
     <div style={{ width: "75vw", height: "75vh" }}>
       <Canvas camera={{ position: [3, 1, 2] }}>
-        <Stats />
         <ambientLight />
         <directionalLight />
         <Box position={[-0.75, 0, 0]} name="A" />
